@@ -2,7 +2,7 @@ import { SETTINGS } from "../settings";
 import { PostDbType, CommentDBType } from "../input-output-types/posts-type";
 import { BlogDbType } from "../input-output-types/blogs-type";
 import { UserDBModel } from "../input-output-types/users-type";
-import { Collection, Db, MongoClient, ObjectId } from "mongodb";
+import { Collection, Db, MongoClient } from "mongodb";
 
 // получение доступа к бд
 let client: MongoClient = new MongoClient(SETTINGS.MONGO_URL);

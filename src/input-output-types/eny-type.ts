@@ -23,8 +23,8 @@ export enum resultStatus {
   Success = "Success",
   NotFound = "NotFound",
   Forbidden = "Forbidden",
-  Unautgorized = "Unauthorized",
-  BadRequest = "BedRequest"
+  Unauthorized = "Unauthorized",
+  BedRequest = "BedRequest"
 }
 
 export type Result<T = null> = {

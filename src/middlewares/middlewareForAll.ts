@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
-import { body, validationResult, query, param } from "express-validator";
+import { body, validationResult } from "express-validator";
 import { SETTINGS } from "../settings";
-import { blogCollection, userCollection, commentCollection } from "../db/mongo-db";
+import { blogCollection, userCollection } from "../db/mongo-db";
 import { ObjectId, WithId } from "mongodb";
 import { SortDirection } from "../input-output-types/eny-type";
 import { jwtService } from "../adapters/jwtToken";

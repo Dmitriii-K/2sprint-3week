@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { postCollection, commentCollection } from "../db/mongo-db";
-import { CommentInputModel, CommentViewModel, PstId,CommentDBType, CommentatorInfo } from "../input-output-types/posts-type";
+import { CommentInputModel, CommentViewModel, PstId,CommentDBType } from "../input-output-types/posts-type";
 import { ObjectId } from "mongodb";
 
 export const createCommentByPostId = async (req:Request<PstId,{}, CommentInputModel>, res:Response<CommentDBType>) => {

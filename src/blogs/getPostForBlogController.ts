@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import {
-  PostViewModel,
   PostDbType,
   PaginatorPostViewModel,
 } from "../input-output-types/posts-type";

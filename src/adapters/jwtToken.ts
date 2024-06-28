@@ -1,7 +1,7 @@
 import  jwt from 'jsonwebtoken';
 import { SETTINGS } from '../settings';
 import { UserDBModel } from '../input-output-types/users-type';
-import { ObjectId, WithId } from 'mongodb';
+import {  WithId } from 'mongodb';
 
 export type AccessPayloadType  = {
   userId: string;

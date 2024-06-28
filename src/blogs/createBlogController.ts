@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import {
   BlogInputModel,
-  BlogViewModel,
   BlogDbType,
 } from "../input-output-types/blogs-type";
 import { blogCollection } from "../db/mongo-db";
