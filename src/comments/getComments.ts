@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CommentDBType } from "../input-output-types/posts-type";
+import { CommentDBType } from "../input-output-types/comments-type";
 import { commentCollection } from "../db/mongo-db";
 import { ComId } from "../input-output-types/eny-type";
 import { mapComment } from "../posts/getCommentByPostId";

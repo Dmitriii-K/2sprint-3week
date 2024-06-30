@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserInputModel, UserDBModel, UserViewModel } from "../input-output-types/users-type";
 import { userCollection } from "../db/mongo-db";
 import { OutputErrorsType } from "../input-output-types/output-errors-type";
-const  bcrypt  = require ( 'bcryptjs' ); 
+import bcrypt from 'bcryptjs'; 
 
 export const createUserController = async (
   req: Request<any, any, UserInputModel>,

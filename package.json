@@ -5,14 +5,12 @@
   "repository": "https://github.com/Dmitriii-K/2sprint-3week.git",
   "author": "Dmitriii-K <dmitriii.kirilenko@yandex.by>",
   "license": "MIT",
-
   "scripts": {
     "watch": "tsc -w",
     "dev": "yarn nodemon --inspect dist/index.js",
     "jest": "jest -i",
     "jest:coverage": "jest -i --coverage"
-},
-
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
@@ -22,6 +20,7 @@
     "mongodb": "^6.8.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",

@@ -1,5 +1,6 @@
 import { SETTINGS } from "../settings";
-import { PostDbType, CommentDBType } from "../input-output-types/posts-type";
+import { PostDbType} from "../input-output-types/posts-type";
+import { CommentDBType } from "../input-output-types/comments-type";
 import { BlogDbType } from "../input-output-types/blogs-type";
 import { UserDBModel } from "../input-output-types/users-type";
 import { Collection, Db, MongoClient } from "mongodb";

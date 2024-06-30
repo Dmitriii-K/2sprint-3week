@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { commentCollection } from "../db/mongo-db";
-import { CommentViewModel, PaginatorCommentViewModelDB, PstId, TypePostHalper, CommentDBType } from "../input-output-types/posts-type";
+import { CommentViewModel, PaginatorCommentViewModelDB, CommentDBType } from "../input-output-types/comments-type";
+import { PstId, TypePostHalper } from "../input-output-types/posts-type";
 import { commentsPagination } from "../middlewares/middlewareForAll";
 import { WithId } from "mongodb";
 

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { postCollection, commentCollection } from "../db/mongo-db";
-import { CommentInputModel, CommentViewModel, PstId,CommentDBType } from "../input-output-types/posts-type";
+import { CommentInputModel, CommentViewModel,CommentDBType } from "../input-output-types/comments-type";
+import { PstId } from "../input-output-types/posts-type";
 import { ObjectId } from "mongodb";
 
 export const createCommentByPostId = async (req:Request<PstId,{}, CommentInputModel>, res:Response<CommentDBType>) => {
@@ -8,8 +9,8 @@ export const createCommentByPostId = async (req:Request<PstId,{}, CommentInputMo
         const id = new ObjectId(req.params.id);
         const commentForPost = await postCollection.findOne({ _id: id });
         if (!commentForPost) {
-          res.sendStatus(404);
-          return;
+        res.sendStatus(404);
+        return;
         };
         const createDate = new Date().toISOString();
         const newComment: CommentDBType = {

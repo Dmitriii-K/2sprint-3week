@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {ComId} from "../input-output-types/eny-type";
-import { CommentInputModel, CommentViewModel } from "../input-output-types/posts-type";
+import { CommentInputModel, CommentViewModel } from "../input-output-types/comments-type";
 import { OutputErrorsType } from "../input-output-types/output-errors-type";
 import { commentCollection } from "../db/mongo-db";
 import { ObjectId } from "mongodb";
