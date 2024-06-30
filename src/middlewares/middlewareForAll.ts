@@ -12,6 +12,27 @@ const urlPattern =
 const imailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const loginPattern = /^[a-zA-Z0-9_-]*$/;
 
+export const registrationEmail = [
+  body("email")
+  .isString()
+  .withMessage("not string")
+  .trim()
+  .not()
+  .isEmpty()
+  .matches(imailPattern)
+  .isEmail()
+  .withMessage("Invalid email format")
+];
+
+export const validationCode = [
+  body("code")
+  .isString()
+  .trim()
+  .not()
+  .isEmpty()
+  .withMessage("code is not string"),
+];
+
 export const commentsValidation = [
   body("content")
   .isString()

@@ -4,12 +4,12 @@ import { userCollection } from "../db/mongo-db";
 import { UserDBModel } from "../input-output-types/users-type";
 import { OutputErrorsType } from "../input-output-types/output-errors-type";
 import { WithId } from "mongodb";
-const  bcrypt  = require ( 'bcryptjs' ); 
+import bcrypt from 'bcryptjs'; 
 import { jwtService } from "../adapters/jwtToken";
 
 
 export const authUser = async (
-  req: Request<any, any, LoginInputModel>,
+  req: Request<{}, {}, LoginInputModel>,
   res: Response<LoginSuccessViewModel | OutputErrorsType>
 ) => {
   try {
