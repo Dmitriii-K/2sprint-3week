@@ -8,3 +8,6 @@ import bcrypt from 'bcryptjs';
 import { jwtService } from "../adapters/jwtToken";
 
 
+export const authController = {
+    
+}
