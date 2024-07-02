@@ -3,6 +3,7 @@ import add from "date-fns/add";
 import { RegistrationUser } from "../input-output-types/auth-type";
 import { UserInputModel } from "../input-output-types/users-type";
 import { UserRepository } from "../users/userRepository";
+import { bcryptService } from "../adapters/bcrypt";
 
 export const authService = {
     async registerUser(data:UserInputModel) {
@@ -10,11 +11,11 @@ export const authService = {
         if (user) return null;
  //проверить существует ли уже юзер с таким логином или почтой и если да - не регистрировать
 
-        const password = await bcryptService.generateHash(pass)//создать хэш пароля
+        const password = await bcryptService.createHashPassword(data.password)//создать хэш пароля
 
         const newUser: RegistrationUser = { // сформировать dto юзера
-            login,
-            email,
+            login: data.login,
+            email: data.email,
             password,
             createdAt: new Date().toString(),
             emailConfirmation: {    // доп поля необходимые для подтверждения
@@ -23,7 +24,7 @@ export const authService = {
                 isConfirmed: false
             }
         };
-        await usersRepository.create(newUser); // сохранить юзера в базе данных
+        await UserRepository.createUser(newUser); // сохранить юзера в базе данных
 
 //отправку сообщения лучше обернуть в try-catch, чтобы при ошибке(например отвалиться отправка) приложение не падало
         try {
@@ -32,8 +33,8 @@ export const authService = {
                 newUser.emailConfirmation.confirmationCode,
                 emailExamples.registrationEmail);
 
-        } catch (e: unknown) {
-            console.error('Send email error', e); //залогировать ошибку при отправке сообщения
+        } catch (error: unknown) {
+            console.error('Send email error', error); //залогировать ошибку при отправке сообщения
         }
         return newUser;
     },

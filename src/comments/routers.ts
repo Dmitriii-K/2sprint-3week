@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getComment } from "./getComments";
-import { updateComment } from "./updateComments";
-import { deleteComment } from "./deleteComments";
+import { getComment } from "./getCommentController";
+import { updateComment } from "./updateCommentController";
+import { deleteComment } from "./deleteCommentController";
 import { commentsValidation, inputCheckErrorsMiddleware } from "../middlewares/middlewareForAll";
 import { bearerAuth } from "../middlewares/middlewareForAll";
 

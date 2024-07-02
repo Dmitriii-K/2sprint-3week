@@ -2,7 +2,6 @@ import { UserDBModel, UserInputModel } from "../input-output-types/users-type";
 import { UserRepository } from "./userRepository";
 import { bcryptService } from "../adapters/bcrypt";
 
-
 export class UserService {
     static async createUser (data:UserInputModel) {
         const userExist = await UserRepository.findUserByLogiOrEmail({login: data.login, email: data.email});

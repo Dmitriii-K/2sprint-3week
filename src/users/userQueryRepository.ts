@@ -3,7 +3,6 @@ import { PaginatorUserViewModel, TypeUserPagination, UserDBModel, UserViewModel 
 import { ObjectId, WithId } from "mongodb";
 import { userPagination } from "../middlewares/middlewareForAll";
 
-
 export class UserQueryRepository {
     static async findUserById (id: string) {
         const mongoId = new ObjectId(id);

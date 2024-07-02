@@ -2,7 +2,6 @@ import { userCollection } from "../db/mongo-db";
 import { UserDBModel } from "../input-output-types/users-type";
 import { ObjectId } from "mongodb";
 
-
 export class UserRepository {
     static async createUser (user: UserDBModel) {
         const saveResult = await userCollection.insertOne(user);

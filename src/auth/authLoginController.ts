@@ -5,8 +5,7 @@ import { jwtService } from "../adapters/jwtToken";
 import { AuthRepository } from "./authRepository";
 import { bcryptService } from "../adapters/bcrypt";
 
-
-export const authUser = async (
+export const authLoginUser = async (
   req: Request<{}, {}, LoginInputModel>,
   res: Response<LoginSuccessViewModel | OutputErrorsType>
 ) => {

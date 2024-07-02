@@ -5,9 +5,8 @@ import {
 } from "../input-output-types/users-type";
 import { UserQueryRepository } from "./userQueryRepository";
 
-
 export const getUserController = async (
-  req: Request<any, any, any, TypeUserPagination>,
+  req: Request<{}, {}, {}, TypeUserPagination>,
   res: Response<PaginatorUserViewModel>
 ) => {
   try {
