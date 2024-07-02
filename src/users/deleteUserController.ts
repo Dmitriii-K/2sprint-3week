@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import { userCollection } from "../db/mongo-db";
-import { ObjectId } from "mongodb";
+import { UserRepository } from "./userRepository";
 
 export const deleteUserController = async (req: Request, res: Response) => {
   try {
-    const id = new ObjectId(req.params.id);
-    const deleteBlog = await userCollection.deleteOne({ _id: id });
-    if (deleteBlog.deletedCount === 1) {
+    const deleteBlog = await UserRepository.deleteUser(req.params.id);
+    if (deleteBlog) {
       res.sendStatus(204);
     } else {
       res.sendStatus(404);

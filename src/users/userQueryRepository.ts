@@ -37,6 +37,7 @@ export class UserQueryRepository {
             totalCount,
             items: items.map(UserQueryRepository.mapUser),
         };
+        return newUser;
     };
     static mapUser (user: WithId<UserDBModel>): UserViewModel {
         return {
