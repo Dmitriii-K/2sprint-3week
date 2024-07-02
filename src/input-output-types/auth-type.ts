@@ -1,5 +1,6 @@
 export type LoginInputModel = {
-  loginOrEmail: string;
+  login: string;
+  email: string;
   password: string;
 };
 
@@ -14,9 +15,30 @@ export type LoginSuccessViewModel = {
 };
 
 export type RegistrationConfirmationCodeModel = {
-  code: string;
+  confirmationCode: string;
 };
 
 export type RegistrationEmailResending = {
   email: string;
 };
+
+export type EmailConfirmationType = {
+  confirmationCode: string;
+  expirationDate: string;
+  isConfirmed: boolean;
+}
+
+export type RegistrationUser = {
+  login: string;
+  password: string;
+  email: string;
+  createdAt: string;
+  emailConfirmation: EmailConfirmationType;
+};
+
+export type RegistrationUserDBModel = {
+  login: string;
+  email: string;
+  createdAt: string;
+  emailConfirmation: EmailConfirmationType;
+}

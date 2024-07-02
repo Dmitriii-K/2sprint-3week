@@ -1,6 +1,6 @@
 import { UserDBModel, UserInputModel } from "../input-output-types/users-type";
-import bcrypt from 'bcryptjs'; 
 import { UserRepository } from "./userRepository";
+import { bcryptService } from "../adapters/bcrypt";
 
 
 export class UserService {
@@ -9,15 +9,12 @@ export class UserService {
         if (userExist) {
             return false;
         };
-        const saltRounds = 10;
-        const password  = data.password;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const userHashPassword = await bcrypt.hash(password, salt)
+        const userPassword = await bcryptService.createHashPassword(data.password);
 
         const createDate = new Date().toISOString();
         const newUser: UserDBModel = {
         login: data.login,
-        password: userHashPassword,
+        password: userPassword,
         email: data.email,
         createdAt: createDate,
         };

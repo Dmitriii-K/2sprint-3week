@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import { LoginInputModel, LoginSuccessViewModel } from "../input-output-types/auth-type";
-import { userCollection } from "../db/mongo-db";
-import { UserDBModel } from "../input-output-types/users-type";
 import { OutputErrorsType } from "../input-output-types/output-errors-type";
-import { WithId } from "mongodb";
-import bcrypt from 'bcryptjs'; 
 import { jwtService } from "../adapters/jwtToken";
+import { AuthRepository } from "./authRepository";
+import { bcryptService } from "../adapters/bcrypt";
 
 
 export const authUser = async (
@@ -13,14 +11,12 @@ export const authUser = async (
   res: Response<LoginSuccessViewModel | OutputErrorsType>
 ) => {
   try {
-  const loginOrEmail = req.body.loginOrEmail;
-  const password = req.body.password;
-
-    const authUser: WithId<UserDBModel> | null = await userCollection.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
+    const {login, email} = req.body
+    const authUser = await AuthRepository.findUserByLogiOrEmail({login, email});
     if (!authUser) {
       res.status(401).json({ errorsMessages: [{field: 'user', message: 'user not found'}] });
     } else {
-      const isCorrect = await bcrypt.compare( password, authUser?.password);
+      const isCorrect = await bcryptService.comparePasswords( req.body.password, authUser?.password);
       if(isCorrect) {
         const{ token: accessToken } = await jwtService.generateToken(authUser);
         res.status(200).json({accessToken});
@@ -31,5 +27,6 @@ export const authUser = async (
   };
   } catch (error) {
     console.log(error);
+    res.sendStatus(505);
   }
 };

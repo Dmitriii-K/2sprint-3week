@@ -14,7 +14,6 @@ export type UserViewModel = {
 };
 
 export type UserDBModel = {
-  
   login: string;
   password: string;
   email: string;
