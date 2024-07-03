@@ -42,7 +42,9 @@ export class AuthController {
         return;
       }
       const registrationResult = await authService.registerUser(req.body);
-      res.sendStatus(204);
+      if(registrationResult) {
+        res.sendStatus(204);
+      }
     } catch (error) {
       console.log(error);
       res.sendStatus(505);
@@ -65,7 +67,12 @@ export class AuthController {
 
   static authRegistrationEmailResending = async (req: Request<{}, {}, RegistrationEmailResending>, res: Response) => {
     try {
-      
+      const emailResending = await authService.resendEmail(req.body.email);
+      if (emailResending) {
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
+      }
     } catch (error) {
       console.log(error);
       res.sendStatus(505);

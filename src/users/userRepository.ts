@@ -1,9 +1,10 @@
 import { userCollection } from "../db/mongo-db";
+import { RegistrationUser } from "../input-output-types/auth-type";
 import { UserDBModel } from "../input-output-types/users-type";
 import { ObjectId } from "mongodb";
 
 export class UserRepository {
-    static async createUser (user: UserDBModel) {
+    static async createUser (user: UserDBModel |RegistrationUser) {
         const saveResult = await userCollection.insertOne(user);
         return saveResult.insertedId.toString();
     }
