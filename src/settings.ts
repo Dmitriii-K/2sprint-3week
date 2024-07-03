@@ -25,7 +25,8 @@ export const SETTINGS = {
   USER_COLLECTION_NAME: process.env.USER_COLLECTION_NAME || "",
   COMMENT_COLLECTION_NAME: process.env.COMMENT_COLLECTION_NAME || "",
   DB_NAME: process.env.DB_NAME || "",
-  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || ""
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || "",
+  PASSWORD_BY_EMAIL: process.env.PASSWORD_BY_EMAIL || ""
 
   // ADMIN: envValidation(process.env.ADMIN) ? process.env.ADMIN : "",
   // MONGO_URL: process.env.MONGO_URL || "mongodb://0.0.0.0:27017",

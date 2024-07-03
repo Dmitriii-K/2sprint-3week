@@ -1,6 +1,4 @@
 import bcrypt from 'bcryptjs';
-import { UserInputModel } from '../input-output-types/users-type';
-
 
 export const bcryptService = {
     async createHashPassword (password: string) {

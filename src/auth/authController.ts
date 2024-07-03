@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import { LoginInputModel, LoginSuccessViewModel } from "../input-output-types/auth-type";
+import { LoginInputModel, LoginSuccessViewModel, RegistrationConfirmationCodeModel, RegistrationEmailResending } from "../input-output-types/auth-type";
 import { OutputErrorsType } from "../input-output-types/output-errors-type";
 import { jwtService } from "../adapters/jwtToken";
 import { AuthRepository } from "./authRepository";
 import { bcryptService } from "../adapters/bcrypt";
+import { UserInputModel } from "../input-output-types/users-type";
+import { authService } from "./authService";
 
 
 export class AuthController {
@@ -32,13 +34,42 @@ export class AuthController {
     }
   };
 
-  static authRegistration = async () => {
+  static authRegistration = async (req:Request<{}, {}, UserInputModel>, res: Response) => {
+    try {
+      const checkResult = await AuthRepository.findUserByLogiOrEmail(req.body);
+      if(checkResult) {
+        res.sendStatus(400);
+        return;
+      }
+      const registrationResult = await authService.registerUser(req.body);
+      res.sendStatus(204);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(505);
+    }
   };
 
-  static authRegistrationConfirmation = async () => {
+  static authRegistrationConfirmation = async (req: Request<{}, {}, RegistrationConfirmationCodeModel>, res: Response) => {
+    try {
+      const result = await authService.confirmEmail(req.body.code);
+      if(result) {
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
+      }
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(505);
+    }
   };
 
-  static authRegistrationEmailResending = async () => {
+  static authRegistrationEmailResending = async (req: Request<{}, {}, RegistrationEmailResending>, res: Response) => {
+    try {
+      
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(505);
+    }
   }
 };
 

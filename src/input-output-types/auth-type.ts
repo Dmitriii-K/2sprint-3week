@@ -15,7 +15,7 @@ export type LoginSuccessViewModel = {
 };
 
 export type RegistrationConfirmationCodeModel = {
-  confirmationCode: string;
+  code: string;
 };
 
 export type RegistrationEmailResending = {
