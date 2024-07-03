@@ -4,12 +4,11 @@ import { CommentQueryRepository } from "./commentQueryRepositiry";
 
 export const getComment = async (req: Request, res: Response<CommentViewModel>) => {
   try {
-    const comment = CommentQueryRepository.findCommentById(req.params.id);
+    const comment = await CommentQueryRepository.findCommentById(req.params.id);
     if(comment) {
-      res.status(200).json(comment)
+      return res.status(200).json(comment)
     };
-    res.sendStatus(404);
-    return;
+    return res.sendStatus(404);
     } catch (error) {
       console.log(error);
       return res.sendStatus(505);

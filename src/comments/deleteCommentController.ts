@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { CommetRepository } from "./commentrepository";
+import { CommetRepository } from "./commentRepository";
 
 export const deleteComment = async (req: Request, res: Response) => {
   try {
     const findUserById = await CommetRepository.findUserByComment(req.user.id);
-    if(findUserById) {
+    if(!findUserById) {
       res.sendStatus(403);
       return;
     }
