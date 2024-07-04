@@ -1,5 +1,6 @@
 import { commentCollection } from "../db/mongo-db";
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
+import { UserDBModel } from "../input-output-types/users-type";
 
 export class CommetRepository {
     static async updateComment (id : string, content : string) {
@@ -11,7 +12,7 @@ export class CommetRepository {
     };
     static async findUserByComment (id: string) {
         const mongoId = new ObjectId(id);
-        return commentCollection.findOne({ _id: mongoId });
+        return commentCollection.findOne({_id: mongoId});
     }
     static async deleteComment(id: string) {
         const mongoId = new ObjectId(id);

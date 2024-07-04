@@ -13,8 +13,7 @@ export class AuthController {
     res: Response<LoginSuccessViewModel | OutputErrorsType>
   ) => {
     try {
-      const {login, email} = req.body;
-      const authUser = await authService.checkCredentials({login, email});
+      const authUser = await authService.checkCredentials(req.body.loginOrEmail);
       if (!authUser) {
         res.status(401).json({ errorsMessages: [{field: 'user', message: 'user not found'}] });
       } else {

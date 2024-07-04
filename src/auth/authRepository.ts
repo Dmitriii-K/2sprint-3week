@@ -7,8 +7,8 @@ export class AuthRepository {
         const result = await userCollection.updateOne({_id : new ObjectId(userId)}, {$set: {'emailConfirmation.confirmationCode': newCode}})
         return result.modifiedCount === 1;
     }
-    static async findUserByLogiOrEmail (data: {login: string, email:string}) {
-        return userCollection.findOne({ $or: [{ login: data.login }, { email: data.email }] });
+    static async findUserByLogiOrEmail (loginOrEmail: string) {
+        return userCollection.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
     }
     static async createUser (user: RegistrationUser) {
         const saveResult = await userCollection.insertOne(user);

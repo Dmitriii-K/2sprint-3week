@@ -3,7 +3,7 @@ import { CommetRepository } from "./commentRepository";
 
 export const deleteComment = async (req: Request, res: Response) => {
   try {
-    const findUserById = await CommetRepository.findUserByComment(req.user.id);
+    const findUserById = await CommetRepository.findUserByComment(req.params.id);
     if(!findUserById) {
       res.sendStatus(403); // false
       return;

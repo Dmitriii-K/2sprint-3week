@@ -44,13 +44,7 @@ export const commentsValidation = [
 ];
 
 export const authCheckValidation = [
-  body("login")
-  .isString()
-  .withMessage("not string")
-  .trim()
-  .not()
-  .isEmpty(),
-  body("email")
+  body("loginOrEmail")
   .isString()
   .withMessage("not string")
   .trim()
@@ -159,14 +153,7 @@ export const postInputValidation = [
     })
     .withMessage(""),
 ];
-const passwordUserValidation = body("password")
-.isString()
-.withMessage("not string")
-.trim()
-.not()
-.isEmpty()
-.isLength({ min: 6, max: 20 })
-.withMessage("Invalid password")
+
 export const userInputValidation = [
   body("login")
     .isString()
@@ -184,7 +171,14 @@ export const userInputValidation = [
     //     return Promise.reject("Login is already in use");
     //   }
     // }),
-    passwordUserValidation,
+  body("password")
+    .isString()
+    .withMessage("not string")
+    .trim()
+    .not()
+    .isEmpty()
+    .isLength({ min: 6, max: 20 })
+    .withMessage("Invalid password"),
   body("email")
     .isString()
     .withMessage("not string")
@@ -219,7 +213,14 @@ export const userRegistrationValidation = [
         return Promise.reject("Login is already in use");
       }
     }),
-    passwordUserValidation,
+  body("password")
+    .isString()
+    .withMessage("not string")
+    .trim()
+    .not()
+    .isEmpty()
+    .isLength({ min: 6, max: 20 })
+    .withMessage("Invalid password"),
   body("email")
     .isString()
     .withMessage("not string")

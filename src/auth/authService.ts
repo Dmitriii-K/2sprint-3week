@@ -8,8 +8,8 @@ import { AuthRepository } from "./authRepository";
 import { WithId } from "mongodb";
 
 export const authService = {
-    async checkCredentials(data: {login: string, email:string}) {
-        const user = await AuthRepository.findUserByLogiOrEmail(data);
+    async checkCredentials(loginOrEmail: string) {
+        const user = await AuthRepository.findUserByLogiOrEmail(loginOrEmail);
         if(user) {
             return user;
         } else {
