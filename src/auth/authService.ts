@@ -47,7 +47,7 @@ export const authService = {
     async confirmEmail(code: string) {
         const user: WithId<RegistrationUser> = await AuthRepository.findUserByCode(code) as WithId<RegistrationUser>;
         if(!user) return false;
-        if(user.emailConfirmation.isConfirmed) return false;
+        if(user.emailConfirmation.isConfirmed === true) return false;
         if(user.emailConfirmation.confirmationCode !== code ) return false;
         if(user.emailConfirmation.expirationDate < new Date().toISOString()) return false;
             const result = await AuthRepository.updateConfirmation(user._id)
@@ -57,6 +57,8 @@ export const authService = {
     async resendEmail(mail: string) {
         const user: WithId<RegistrationUser> = await AuthRepository.findUserByEmail(mail) as WithId<RegistrationUser>;
         if(!user) return false;
+        if(user.emailConfirmation.isConfirmed === true) return false;
+        if(user.emailConfirmation.isConfirmed === false) return true;
         const newCode = randomUUID();
         await  Promise.all([
         AuthRepository.updateCode(user._id.toString(), newCode),
