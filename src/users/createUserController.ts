@@ -11,7 +11,7 @@ export const createUserController = async (
   try {
     const createResult = await UserService.createUser(req.body);
     if (!createResult) {
-      res.status(400).json({ errorsMessages: [{field: 'email and login', message: 'email and login should be unique'}]
+      res.status(400).json({ errorsMessages: [{ message: 'email and login should be unique', field: 'email and login',}]
         });
         return;
     };

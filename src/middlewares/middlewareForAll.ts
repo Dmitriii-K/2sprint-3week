@@ -44,7 +44,13 @@ export const commentsValidation = [
 ];
 
 export const authCheckValidation = [
-  body("loginOrEmail")
+  body("login")
+  .isString()
+  .withMessage("not string")
+  .trim()
+  .not()
+  .isEmpty(),
+  body("email")
   .isString()
   .withMessage("not string")
   .trim()
@@ -153,7 +159,14 @@ export const postInputValidation = [
     })
     .withMessage(""),
 ];
-
+const passwordUserValidation = body("password")
+.isString()
+.withMessage("not string")
+.trim()
+.not()
+.isEmpty()
+.isLength({ min: 6, max: 20 })
+.withMessage("Invalid password")
 export const userInputValidation = [
   body("login")
     .isString()
@@ -171,14 +184,7 @@ export const userInputValidation = [
     //     return Promise.reject("Login is already in use");
     //   }
     // }),
-  body("password")
-    .isString()
-    .withMessage("not string")
-    .trim()
-    .not()
-    .isEmpty()
-    .isLength({ min: 6, max: 20 })
-    .withMessage("Invalid password"),
+    passwordUserValidation,
   body("email")
     .isString()
     .withMessage("not string")
@@ -194,6 +200,41 @@ export const userInputValidation = [
     //     return Promise.reject("Email is already in use");
     //   }
     // }),
+];
+
+export const userRegistrationValidation = [
+  body("login")
+    .isString()
+    .withMessage("not string")
+    .trim()
+    .not()
+    .isEmpty()
+    .matches(loginPattern)
+    .withMessage("not login")
+    .isLength({ min: 3, max: 10 })
+    .withMessage("Invalid login")
+    .custom(async (value : string) => {
+      const user = await userCollection.findOne({ login: value });
+      if (user) {
+        return Promise.reject("Login is already in use");
+      }
+    }),
+    passwordUserValidation,
+  body("email")
+    .isString()
+    .withMessage("not string")
+    .trim()
+    .not()
+    .isEmpty()
+    .matches(imailPattern)
+    .isEmail()
+    .withMessage("Invalid email format")
+    .custom(async (value) => {
+      const user = await userCollection.findOne({ email: value });
+      if (user) {
+        return Promise.reject("Email is already in use");
+      }
+    }),
 ];
 
 export const inputCheckErrorsMiddleware = (
@@ -259,7 +300,7 @@ if(!req.headers.authorization) {
 
   const user : WithId<UserDBModel> | null= await userCollection.findOne({ _id : new ObjectId(payload.userId)}); 
   if(user) {
-    req.user = {_id:user._id, login: user.login};
+    req.user = user;
     next();
     return
   } else {

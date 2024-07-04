@@ -1,16 +1,31 @@
 import {randomUUID} from "crypto";
 import {add} from "date-fns"; 
-import { RegistrationUser } from "../input-output-types/auth-type";
-import { UserInputModel } from "../input-output-types/users-type";
-import { UserRepository } from "../users/userRepository";
+import { LoginInputModel, RegistrationUser} from "../input-output-types/auth-type";
+import { UserDBModel, UserInputModel } from "../input-output-types/users-type";
 import { bcryptService } from "../adapters/bcrypt";
 import { sendMailService } from "../adapters/sendEmail";
 import { AuthRepository } from "./authRepository";
+import { WithId } from "mongodb";
 
 export const authService = {
+    async checkCredentials(data: {login: string, email:string}) {
+        const user = await AuthRepository.findUserByLogiOrEmail(data);
+        if(user) {
+            return user;
+        } else {
+            return null;
+        }
+
+        // const isCorrect = await bcryptService.comparePasswords(password, user?.password);
+        // if(isCorrect) {
+        //     return user;
+        // } else {
+        //     return null;
+        // }
+    },
     async registerUser(data:UserInputModel) {
-        const user = await AuthRepository.findUserByLogiOrEmail({login: data.login, email: data.email});
-        if (user) return null;
+        // const user = await AuthRepository.findUserByLogiOrEmail({login: data.login, email: data.email});
+        // if (user) return null;
  //проверить существует ли уже юзер с таким логином или почтой и если да - не регистрировать
         const password = await bcryptService.createHashPassword(data.password)//создать хэш пароля
         const newUser: RegistrationUser = { // сформировать dto юзера
@@ -24,18 +39,30 @@ export const authService = {
                 isConfirmed: false
             }
         };
-        await UserRepository.createUser(newUser); // сохранить юзера в базе данных
-        await sendMailService.sendMail(newUser.emailConfirmation.confirmationCode);
+        await AuthRepository.createUser(newUser); // сохранить юзера в базе данных
+        await sendMailService.sendMail(newUser.email ,newUser.emailConfirmation.confirmationCode);
+        // console.log(newUser);
         return newUser;
     },
     async confirmEmail(code: string) {
-        const user: RegistrationUser = await AuthRepository.findUserByCode(code);
-        if(user.emailConfirmation.confirmationCode === code) {
-            
-        }
-        
+        const user: WithId<RegistrationUser> = await AuthRepository.findUserByCode(code) as WithId<RegistrationUser>;
+        if(!user) return false;
+        if(user.emailConfirmation.isConfirmed) return false;
+        if(user.emailConfirmation.confirmationCode !== code ) return false;
+        if(user.emailConfirmation.expirationDate < new Date().toISOString()) return false;
+            const result = await AuthRepository.updateConfirmation(user._id)
+            // console.log(result);
+            return result;
     },
     async resendEmail(mail: string) {
-        
+        const user: WithId<RegistrationUser> = await AuthRepository.findUserByEmail(mail) as WithId<RegistrationUser>;
+        if(!user) return false;
+        const newCode = randomUUID();
+        await  Promise.all([
+        AuthRepository.updateCode(user._id.toString(), newCode),
+        sendMailService.sendMail(mail, newCode)
+        ])
+        // console.log(result);
+        return true;
     }
 };

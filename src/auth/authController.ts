@@ -2,10 +2,9 @@ import { Request, Response } from "express";
 import { LoginInputModel, LoginSuccessViewModel, RegistrationConfirmationCodeModel, RegistrationEmailResending } from "../input-output-types/auth-type";
 import { OutputErrorsType } from "../input-output-types/output-errors-type";
 import { jwtService } from "../adapters/jwtToken";
-import { AuthRepository } from "./authRepository";
-import { bcryptService } from "../adapters/bcrypt";
 import { UserInputModel } from "../input-output-types/users-type";
 import { authService } from "./authService";
+import { bcryptService } from "../adapters/bcrypt";
 
 
 export class AuthController {
@@ -14,12 +13,12 @@ export class AuthController {
     res: Response<LoginSuccessViewModel | OutputErrorsType>
   ) => {
     try {
-      const {login, email} = req.body
-      const authUser = await AuthRepository.findUserByLogiOrEmail({login, email});
+      const {login, email} = req.body;
+      const authUser = await authService.checkCredentials({login, email});
       if (!authUser) {
         res.status(401).json({ errorsMessages: [{field: 'user', message: 'user not found'}] });
       } else {
-        const isCorrect = await bcryptService.comparePasswords( req.body.password, authUser?.password);
+        const isCorrect = await bcryptService.comparePasswords(req.body.password, authUser?.password);
         if(isCorrect) {
           const{ token: accessToken } = await jwtService.generateToken(authUser);
           res.status(200).json({accessToken});
@@ -36,14 +35,11 @@ export class AuthController {
 
   static authRegistration = async (req:Request<{}, {}, UserInputModel>, res: Response) => {
     try {
-      const checkResult = await AuthRepository.findUserByLogiOrEmail(req.body);
-      if(checkResult) {
-        res.sendStatus(400);
-        return;
-      }
       const registrationResult = await authService.registerUser(req.body);
       if(registrationResult) {
         res.sendStatus(204);
+      } else {
+        res.sendStatus(400);
       }
     } catch (error) {
       console.log(error);
@@ -57,7 +53,7 @@ export class AuthController {
       if(result) {
         res.sendStatus(204);
       } else {
-        res.sendStatus(400);
+        res.status(400).send({errorsMessages: [{field: "code", message: " Code validation failure "}]})
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +67,8 @@ export class AuthController {
       if (emailResending) {
         res.sendStatus(204);
       } else {
-        res.sendStatus(400);
+        res.status(400).json({ errorsMessages: [{ message: 'eanother error', field: 'email',}]
+        });
       }
     } catch (error) {
       console.log(error);
