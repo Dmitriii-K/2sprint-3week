@@ -1,5 +1,4 @@
 import { userCollection } from "../db/mongo-db";
-import { RegistrationUser } from "../input-output-types/auth-type";
 import { UserDBModel } from "../input-output-types/users-type";
 import { ObjectId } from "mongodb";
 

@@ -13,7 +13,7 @@ export const sendMailService = {
                 // secureConnection: false,
                 auth: {
                 user: "hometaskincubator@gmail.com",
-                pass: 'fsit pifk kmnl dndp',
+                pass: SETTINGS.PASSWORD_BY_EMAIL,
                 },
                 // tls: {
                 //     rejectUnauthorized: false,

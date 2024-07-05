@@ -1,7 +1,7 @@
 import {randomUUID} from "crypto";
 import {add} from "date-fns"; 
-import { LoginInputModel, RegistrationUser} from "../input-output-types/auth-type";
-import { UserDBModel, UserInputModel } from "../input-output-types/users-type";
+import { RegistrationUser} from "../input-output-types/auth-type";
+import { UserInputModel } from "../input-output-types/users-type";
 import { bcryptService } from "../adapters/bcrypt";
 import { sendMailService } from "../adapters/sendEmail";
 import { AuthRepository } from "./authRepository";
@@ -15,18 +15,9 @@ export const authService = {
         } else {
             return null;
         }
-
-        // const isCorrect = await bcryptService.comparePasswords(password, user?.password);
-        // if(isCorrect) {
-        //     return user;
-        // } else {
-        //     return null;
-        // }
     },
     async registerUser(data:UserInputModel) {
-        // const user = await AuthRepository.findUserByLogiOrEmail({login: data.login, email: data.email});
-        // if (user) return null;
- //проверить существует ли уже юзер с таким логином или почтой и если да - не регистрировать
+ //проверить существует ли уже юзер с таким логином или почтой и если да - не регистрировать ПРОВЕРКА В MIDDLEWARE
         const password = await bcryptService.createHashPassword(data.password)//создать хэш пароля
         const newUser: RegistrationUser = { // сформировать dto юзера
             login: data.login,

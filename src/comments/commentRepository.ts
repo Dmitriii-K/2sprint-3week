@@ -1,6 +1,5 @@
 import { commentCollection } from "../db/mongo-db";
-import { ObjectId, WithId } from "mongodb";
-import { UserDBModel } from "../input-output-types/users-type";
+import { ObjectId } from "mongodb";
 
 export class CommetRepository {
     static async updateComment (id : string, content : string) {
