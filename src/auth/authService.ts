@@ -58,11 +58,10 @@ export const authService = {
         const user: WithId<RegistrationUser> = await AuthRepository.findUserByEmail(mail) as WithId<RegistrationUser>;
         if(!user) return false;
         if(user.emailConfirmation.isConfirmed === true) return false;
-        if(user.emailConfirmation.isConfirmed === false) return true;
         const newCode = randomUUID();
         await  Promise.all([
         AuthRepository.updateCode(user._id.toString(), newCode),
-        sendMailService.sendMail(mail, newCode)
+        await sendMailService.sendMail(mail, newCode)
         ])
         // console.log(result);
         return true;
