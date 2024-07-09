@@ -5,32 +5,20 @@ import { testSeeder } from './test.seeder';
 import { sendMailService } from '../../src/adapters/sendEmail';
 import { MongoClient } from 'mongodb';
 
-describe('authService integration tests', () => {
-
-    // beforeAll(async () => {
-    //     const mongoServer = await MongoMemoryServer.create();
-    //     const mongoUri = mongoServer.getUri();
-    //       // Подключите базу данных к Вашему приложению
-    //     await db.run(mongoUri);
-    //     });
-    // beforeEach(async () => {
-    //     await db.drop();
-    // })
-    // afterAll(async () => {
-    //     await db.drop();
-    //     await db.stop();
-    // });
-    // afterAll((done) => done());
-
-    // beforeAll(async () => {
-    // const mongoServer = await MongoMemoryServer.create(); 
-    // const uri = mongoServer.getUri(); 
-    // const client = new MongoClient(uri); 
-    // await client.connect(); 
-    // const db = client.db('testdb'); 
-    // console.log(`MongoDB in-memory server started at ${uri}`);
-    // })
-
+describe('authService    integration tests', () => {
+    let client : MongoClient
+    beforeAll(async () => {
+        const mongoServer = await MongoMemoryServer.create();
+        const mongoUri = mongoServer.getUri();
+          // Подключите базу данных к Вашему приложению
+        client = new MongoClient(mongoUri);
+        await client.connect();
+        });
+    afterAll(async () => {
+        await client.close()
+        //return done()
+    }
+);
     // beforeAll(async () => {
     //     await connectDB();
     //     await userCollection.drop();
@@ -38,8 +26,7 @@ describe('authService integration tests', () => {
     // afterAll(async () => {
     //     await userCollection.drop();
     // });
-
-
+    
     describe('checkCredentials user', () => {
         it('should return user if email is valid', async () => {
             const user = await authService.checkCredentials('testemail@gmail.com');
@@ -62,11 +49,10 @@ describe('authService integration tests', () => {
         const registrationUser = authService.registerUser;
         it('should register a new user successfully', async () => {
             const data = testSeeder.createUserDto();
-            const result = await registrationUser(data);
-            const newUser = await authService.registerUser(result);
+            const newUser = await authService.registerUser(data);
             expect(newUser).toBeDefined();
-            expect(newUser.login).toEqual(result.login);
-            expect(newUser.email).toBe(result.email);
+            expect(newUser.login).toEqual(data.login);
+            expect(newUser.email).toBe(data.email);
             expect(newUser.emailConfirmation.isConfirmed).toBeFalsy();
 
             expect(sendMailService.sendMail).toBeCalled();

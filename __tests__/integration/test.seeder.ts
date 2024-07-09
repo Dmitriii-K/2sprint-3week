@@ -1,5 +1,7 @@
 import { randomUUID } from "crypto";
 import { add } from "date-fns";
+import { db, userCollection } from "../../src/db/mongo-db";
+import { UserDBModel } from "../../src/input-output-types/users-type";
 
 type RegisterUserType = {
     login: string,
@@ -64,7 +66,8 @@ export const testSeeder = {
                 isConfirmed: isConfirmed ?? false,
             }
         };
-        const res = await db.userCollection().insertOne({...newUser})
+        // ts-ignore
+        const res = await userCollection.insertOne({ ...newUser } as unknown as UserDBModel)
         return {
             id: res.insertedId.toString(),
             ...newUser
