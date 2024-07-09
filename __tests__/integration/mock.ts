@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 
 
 export const emailServiceMock: typeof sendMailService = {
-    async sendEmail(email: string, confirmationCode: string){
+    async sendMail(email: string, confirmationCode: string){
         return true;
     }
 }
