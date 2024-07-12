@@ -16,6 +16,11 @@ export class UserService {
         password: userPassword,
         email: data.email,
         createdAt: createDate,
+        emailConfirmation: {    // доп поля необходимые для подтверждения
+            confirmationCode: "",
+            expirationDate: "",
+            isConfirmed: true,
+        }
         };
     return UserRepository.createUser(newUser);
     }

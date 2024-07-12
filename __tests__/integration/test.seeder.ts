@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { add } from "date-fns";
-import { db, userCollection } from "../../src/db/mongo-db";
+import { userCollection } from "../../src/db/mongo-db";
 import { UserDBModel } from "../../src/input-output-types/users-type";
 
 type RegisterUserType = {

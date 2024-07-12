@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { userCollection } from "../db/mongo-db";
-import { RegistrationUser } from "../input-output-types/auth-type";
+import { UserDBModel } from "../input-output-types/users-type";
 
 export class AuthRepository {
     static async updateCode(userId: string, newCode: string) {
@@ -10,7 +10,7 @@ export class AuthRepository {
     static async findUserByLogiOrEmail (loginOrEmail: string) {
         return userCollection.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
     }
-    static async createUser (user: RegistrationUser) {
+    static async createUser (user: UserDBModel) {
         const saveResult = await userCollection.insertOne(user);
         return saveResult.insertedId.toString();
     }

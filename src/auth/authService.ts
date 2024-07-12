@@ -1,7 +1,6 @@
 import {randomUUID} from "crypto";
 import {add} from "date-fns"; 
-import { RegistrationUser} from "../input-output-types/auth-type";
-import { UserInputModel } from "../input-output-types/users-type";
+import { UserDBModel, UserInputModel } from "../input-output-types/users-type";
 import { bcryptService } from "../adapters/bcrypt";
 import { sendMailService } from "../adapters/sendEmail";
 import { AuthRepository } from "./authRepository";
@@ -19,7 +18,7 @@ export const authService = {
     async registerUser(data:UserInputModel) {
  //проверить существует ли уже юзер с таким логином или почтой и если да - не регистрировать ПРОВЕРКА В MIDDLEWARE
         const password = await bcryptService.createHashPassword(data.password)//создать хэш пароля
-        const newUser: RegistrationUser = { // сформировать dto юзера
+        const newUser: UserDBModel = { // сформировать dto юзера
             login: data.login,
             email: data.email,
             password,
@@ -36,7 +35,7 @@ export const authService = {
         return newUser;
     },
     async confirmEmail(code: string) {
-        const user: WithId<RegistrationUser> = await AuthRepository.findUserByCode(code) as WithId<RegistrationUser>;
+        const user: WithId<UserDBModel> | null = await AuthRepository.findUserByCode(code);
         if(!user) return false;
         if(user.emailConfirmation.isConfirmed) return false;
         if(user.emailConfirmation.confirmationCode !== code ) return false;
@@ -46,7 +45,7 @@ export const authService = {
             return result;
     },
     async resendEmail(mail: string) {
-        const user: WithId<RegistrationUser> = await AuthRepository.findUserByEmail(mail) as WithId<RegistrationUser>;
+        const user: WithId<UserDBModel> | null = await AuthRepository.findUserByEmail(mail);
         if(!user) return false;
         if(user.emailConfirmation.isConfirmed) return false;
         const newCode = randomUUID();
